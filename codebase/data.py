@@ -15,30 +15,37 @@ fitness_activities  = [
      {
         "id": 1,
         "name":"Yoga",
-        "datetime":"2025-06-10 21:00",
+        "datetime":"2025-06-11 17:00",
         "instructor":"Sarah",
         "available_slots":20
      },
     {
         "id": 2,
-        "name":"Yoga",
-        "datetime":"2025-06-11 08:30",
-        "instructor":"Sarah",
+        "name":"Zumba",
+        "datetime":"2025-06-11 17:30",
+        "instructor":"Esha",
         "available_slots":20
      },
       {
         "id": 3,
-        "name":"Zumba",
-        "datetime":"2025-06-11 08:30",
+        "name":"HIIT",
+        "datetime":"2025-06-11 18:30",
         "instructor":"Reeta",
-        "available_slots":20
+        "available_slots":5
      },
      {
         "id": 6,
         "name":"HITT",
-        "datetime":"2025-06-12 07:30",
+        "datetime":"2025-06-12 20:00",
         "instructor":"David",
-        "available_slots":5
+        "available_slots":10
+     },
+      {
+        "id": 7,
+        "name":"HITT",
+        "datetime":"2025-06-13 07:00",
+        "instructor":"David",
+        "available_slots":10
      }
      ]
 

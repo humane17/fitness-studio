@@ -19,9 +19,9 @@ ALL_TIMEZONES = available_timezones()
 @app.get("/timezones/sample/", tags=['Testing'])
 def get_sample_timezones():
     """Returns a demo list of timezones for testing or dropdown population."""
-    return sorted(sample_tz)
+    return {"test_values" :sorted(sample_tz)}
 
-@app.get("/memory/", tags=['Testing'])
+@app.get("/memory", tags=['Testing'])
 def get_memory():
 
     """Returns all data in memory."""
@@ -30,7 +30,7 @@ def get_memory():
 
 
 
-@app.get("/classes", response_model=List[schema.FitnessClass], tags=['Fitness Studio - Sweat Syndicate'])
+@app.get("/classes", response_model=schema.FitnessClassResponse, tags=['Fitness Studio - Sweat Syndicate'])
 def get_classes(user_timezone: Optional[str] | None = Query(example="Australia/Sydney")):
     """Returns a list of all upcoming fitness classes (name, date/time, instructor, available slots)
     
@@ -59,16 +59,16 @@ def get_classes(user_timezone: Optional[str] | None = Query(example="Australia/S
 
         if class_dt > now:
             filtered_list.append(cls)
-
+    print("Classes scheduled are -", filtered_list)
     if not filtered_list:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="No class scheduled yet."
         )
 
-    return filtered_list
+    return {"classes" : filtered_list}
 
 
-@app.post("/create/booking", tags=['Fitness Studio - Sweat Syndicate'])
+@app.post("/book", tags=['Fitness Studio - Sweat Syndicate'])
 def create_booking(booking: schema.BookingDetails):
 
     """Accepts a booking request (class_id,client_name,client_email,client_timezone,slots_reqd)
@@ -104,7 +104,7 @@ def create_booking(booking: schema.BookingDetails):
     return {"message":"Booked Successfully!","details": booking_completed}
 
 
-@app.get("/booking", tags=['Fitness Studio - Sweat Syndicate'])
+@app.get("/booking", response_model=schema.BookingResponse, tags=['Fitness Studio - Sweat Syndicate'])
 def get_booking(email : EmailStr):
 
     """Returns all bookings made by a specific email address.
@@ -114,14 +114,13 @@ def get_booking(email : EmailStr):
 
     all_user_bookings = []
     all_user_bookings = [booking for booking in bookings if booking['booked_email'] == email]
+    print('All Bookings -',all_user_bookings)
+
     if not all_user_bookings:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                              detail=f"No bookings found with email - {email}")
     
-    return all_user_bookings
-
-
-
+    return {"details": all_user_bookings}
 
 
 

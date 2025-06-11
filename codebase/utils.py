@@ -32,19 +32,26 @@ def validate_booking(class_data, booking_data):
         If yes, throws error
         Else returns new_booking created
     """
-    
+    print("Class data is ",class_data)
+    print("Type of class data is -" ,type(class_data))
     client_email = booking_data['client_email']
-    booking_present = [booking for booking in bookings if booking.get('booked_email') == client_email]
+    class_id_req = booking_data['class_id']
+
+    booking_present = [booking for booking in bookings if booking.get('booked_email') == client_email 
+                       and booking.get('booked_class') == class_id_req]
    
     if booking_present:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST
-                            ,detail=f"Booking already present with email {client_email}.")
+                            ,detail=f"Booking already present with email {client_email} for {class_data.get('name')} class by {class_data.get('instructor')}.")
     else:
         new_booking = {"booked_name": booking_data['client_name'],
                        "booked_email": booking_data['client_email'],
                        "slots_booked": booking_data['slots_reqd'],
                        "booked_class" : class_data['id'],
+                       "class_time" : class_data['datetime'],
+                       "class_name": class_data['name'],
                        "booking_id" : random.randint(lower_bound,upper_bound)}
+        
         bookings.append(new_booking)
         print('Bookings list updated. Current values are -', bookings)
         reduce_slots(class_data,new_booking)
